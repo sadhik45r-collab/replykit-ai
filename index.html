@@ -1,1 +1,113 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReplyKit - Customer Reply Assistant</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f6fb;color:#172033;font-family:Arial,sans-serif}
+header{background:#172554;color:white;padding:24px 18px}
+header h1{margin:0;font-size:27px}
+header p{color:#cbd5e1;margin-bottom:0}
+main{max-width:600px;margin:25px auto;padding:20px}
+.card{background:white;padding:22px;border-radius:16px;box-shadow:0 4px 18px #0000000d}
+label{display:block;font-weight:bold;margin:18px 0 8px}
+textarea,select{width:100%;padding:13px;border:1px solid #cbd5e1;border-radius:9px;font-size:16px}
+textarea{height:120px;resize:vertical}
+button{border:0;border-radius:9px;padding:13px 17px;font-size:15px;font-weight:bold;cursor:pointer}
+.generate{background:#2563eb;color:white;width:100%;margin-top:18px}
+.copy{background:#172554;color:white;margin-top:12px}
+#result{background:#f1f5f9;padding:15px;border-radius:9px;min-height:80px;white-space:pre-wrap;line-height:1.6;margin-top:12px}
+footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+<h1>ReplyKit</h1>
+<p>Better customer replies. Less time typing.</p>
+</header>
+<main>
+<div class="card">
+<h2>Customer Reply Assistant</h2>
+<p>Choose a situation and create a helpful reply for your customer.</p>
+
+<label for="type">Customer situation</label>
+<select id="type">
+<option value="order">Where is my order?</option>
+<option value="delivery">Delivery delay</option>
+<option value="refund">Refund request</option>
+<option value="availability">Product availability</option>
+<option value="thanks">Customer says thank you</option>
+</select>
+
+<label for="message">Customer message</label>
+<textarea id="message" placeholder="Paste the customer's message here..."></textarea>
+
+<label for="tone">Reply tone</label>
+<select id="tone">
+<option value="friendly">Friendly</option>
+<option value="professional">Professional</option>
+<option value="short">Short and simple</option>
+</select>
+
+<button class="generate" onclick="generateReply()">Generate Reply</button>
+
+<h3>Suggested reply</h3>
+<div id="result">Your suggested reply will appear here.</div>
+<button class="copy" onclick="copyReply()">Copy Reply</button>
+</div>
+</main>
+<footer>ReplyKit · Review every reply before sending.</footer>
+
+<script>
+function generateReply(){
+const type=document.getElementById("type").value;
+const tone=document.getElementById("tone").value;
+const message=document.getElementById("message").value.trim();
+
+if(!message){
+alert("Please enter the customer's message first.");
+return;
+}
+
+const replies={
+order:"Thanks for reaching out! We'd be happy to help check your order status. Please share your order number so we can look into it.",
+delivery:"We're sorry for the delay. Thank you for your patience. Please share your order number so we can check the latest delivery update.",
+refund:"Thanks for contacting us. We'd be happy to review your refund request. Please share your order number and we'll guide you through the next steps.",
+availability:"Thanks for your interest! Please tell us which product or size you're looking for so we can check its availability.",
+thanks:"You're very welcome! Thank you for shopping with us. We appreciate your support!"
+};
+
+let reply=replies[type];
+
+if(tone==="short"){
+reply=reply.split(".")[0]+".";
+}
+if(tone==="professional"){
+reply="Hello,\n\n"+reply+"\n\nBest regards,\nCustomer Support";
+}
+if(tone==="friendly"){
+reply="Hi there!\n\n"+reply+"\n\nHave a great day!";
+}
+
+document.getElementById("result").textContent=reply;
+}
+
+function copyReply(){
+const reply=document.getElementById("result").textContent;
+if(reply==="Your suggested reply will appear here."){
+alert("Generate a reply first.");
+return;
+}
+if(navigator.clipboard && navigator.clipboard.writeText){
+navigator.clipboard.writeText(reply).then(()=>alert("Reply copied!"));
+}else{
+alert("Please select and copy the reply manually.");
+}
+}
+</script>
+</body>
+</html>
+
