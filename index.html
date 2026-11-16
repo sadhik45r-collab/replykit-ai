@@ -54,51 +54,7 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 <option value="short">Short and simple</option>
 </select>
 
-<button class="generate" onclick="gene
-  
-  function generateReply(){
-const type=document.getElementById("type").value;
-const tone=document.getElementById("tone").value;
-const message=document.getElementById("message").value.trim().toLowerCase();
-const shopName=document.getElementById("shopName").value.trim();
-  
-
-if(!message){
-alert("Please enter the customer's message first.");
-return;
-}
-
-let reply="Thanks for contacting us! Could you please share a few more details so we can assist you?";
-
-if(message.includes("where") || message.includes("track") || message.includes("order")){
-reply="Thanks for reaching out! We'd be happy to help with your order. Please share your order number so we can check its status.";
-}
-else if(message.includes("late") || message.includes("delay") || message.includes("delivery")){
-reply="We're sorry for the delay. Thank you for your patience. Please share your order number so we can check the delivery update.";
-}
-else if(message.includes("refund") || message.includes("return") || message.includes("money")){
-reply="Thanks for contacting us. We'd be happy to review your refund or return request. Please share your order number.";
-}
-else if(message.includes("available") || message.includes("stock") || message.includes("size")){
-reply="Thanks for your interest! Please tell us which product or size you're looking for so we can check availability.";
-}
-else if(message.includes("thank")){
-reply="You're very welcome! Thank you for choosing our shop. We appreciate your support!";
-}
-
-if(tone==="friendly"){
-reply="Hi there!\n\n"+reply+"\n\nHave a great day!";
-}
-else if(tone==="professional"){
-reply="Hello,\n\n"+reply+"\n\nBest regards,\nCustomer Support";
-}
-
-if(tone==="short"){
-reply=reply.split(".")[0]+".";
-}
-
-document.getElementById("result").textContent=reply;
-  }()">Generate Reply</button>
+<button class="generate" onclick="generateReply()">Generate Reply</button>
 
 <h3>Suggested reply</h3>
 <div id="result">Your suggested reply will appear here.</div>
