@@ -60,6 +60,8 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 const type=document.getElementById("type").value;
 const tone=document.getElementById("tone").value;
 const message=document.getElementById("message").value.trim().toLowerCase();
+const shopName=document.getElementById("shopName").value.trim();
+  
 
 if(!message){
 alert("Please enter the customer's message first.");
@@ -109,7 +111,8 @@ document.getElementById("result").textContent=reply;
 function generateReply(){
 const type=document.getElementById("type").value;
 const tone=document.getElementById("tone").value;
-const message=document.getElementById("message").value.trim();
+const message=document.getElementById("message").value.trim()
+const shopName=document.getElementById("shopName").value.trim();
 
 if(!message){
 alert("Please enter the customer's message first.");
@@ -135,7 +138,9 @@ reply="Hello,\n\n"+reply+"\n\nBest regards,\nCustomer Support";
 if(tone==="friendly"){
 reply="Hi there!\n\n"+reply+"\n\nHave a great day!";
 }
-
+if(shopName){
+reply += "\n\n— " + shopName + " Support";
+}
 document.getElementById("result").textContent=reply;
 }
 
