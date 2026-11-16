@@ -84,6 +84,10 @@ thanks:"You're very welcome! Thank you for shopping with us. We appreciate your 
 };
 
 let reply=replies[type];
+  if(!reply){
+alert("Please select a valid reply type.");
+return;
+  }
 
 if(tone==="short"){
 reply=reply.split(".")[0]+".";
