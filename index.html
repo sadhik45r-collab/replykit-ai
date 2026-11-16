@@ -57,13 +57,50 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 <button class="generate" onclick="generateReply()">Generate Reply</button>
 
 <h3>Suggested reply</h3>
+<div class="ask-box">
+<textarea id="askMessage" placeholder="Ask anything about orders, delivery, refunds..."></textarea>
+<button onclick="askReplyFlow()">Ask ReplyFlow</button>
+<div id="askResult"></div>
+</div>
 <div id="result">Your suggested reply will appear here.</div>
 <button class="copy" onclick="copyReply()">Copy Reply</button>
 </div>
 </main>
 <footer>ReplyKit · Review every reply before sending.</footer>
 
-<script>
+
+  function askReplyFlow(){
+const message=document.getElementById("askMessage").value.trim();
+const result=document.getElementById("askResult");
+
+if(!message){
+alert("Please enter your question.");
+return;
+}
+
+let answer="Thanks for contacting us! We'd be happy to help. Could you please share more details so we can assist you?";
+
+const q=message.toLowerCase();
+
+if(q.includes("order")){
+answer="Thanks for reaching out! Please share your order number so we can check your order status.";
+}
+else if(q.includes("delivery") || q.includes("late")){
+answer="We're sorry for the delay. Please share your order number so we can check the latest delivery update.";
+}
+else if(q.includes("refund")){
+answer="Hello,\n\nThanks for contacting us. We'd be happy to review your refund request. Please share your order number and we'll guide you through the next steps.\n\nBest regards,\nCustomer Support";
+}
+else if(q.includes("cancel")){
+answer="Thanks for contacting us. Please share your order number so we can help with your cancellation request.";
+}
+else if(q.includes("available") || q.includes("stock")){
+answer="Thanks for your interest! Please tell us which product you're looking for so we can check its availability.";
+}
+
+result.textContent=answer;
+}
+  <script>
 function generateReply(){
 const type=document.getElementById("type").value;
 const tone=document.getElementById("tone").value;
