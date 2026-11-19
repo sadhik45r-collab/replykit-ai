@@ -228,6 +228,17 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
     </div>
   </div>
 </div>
+  <div class="modal" id="clearModal">
+  <div class="modal-box">
+    <h3>Clear All History?</h3>
+    <p>Are you sure you want to delete all conversations?</p>
+
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="closeClearModal()">Cancel</button>
+      <button class="confirm-btn" onclick="confirmClearHistory()">Clear All</button>
+    </div>
+  </div>
+  </div>
        
 
 </div>
@@ -238,6 +249,18 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 <script>
 
 let deleteIndex = null;
+  function closeClearModal(){
+document.getElementById("clearModal").style.display="none";
+}
+
+function confirmClearHistory(){
+localStorage.removeItem("replyHistory");
+closeClearModal();
+showHistory();
+}
+  function clearHistory(){
+document.getElementById("clearModal").style.display="flex";
+  }
 
 function closeDeleteModal(){
 document.getElementById("deleteModal").style.display="none";
