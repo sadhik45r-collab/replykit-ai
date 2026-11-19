@@ -95,8 +95,7 @@ answer="Please share your order number so we can help with cancellation.";
 answer="Which product are you looking for? We'll help check availability.";
 }
 
-result.textContent=answer;
-      let history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
+let history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
 history.unshift({question:message,answer:answer});
 localStorage.setItem("replyHistory",JSON.stringify(history));
 
