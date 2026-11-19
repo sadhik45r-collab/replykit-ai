@@ -42,6 +42,7 @@ padding:26px;
 border-radius:20px;
 box-shadow:0 8px 30px rgba(23,37,84,0.08);
 border:1px solid #e2e8f0;
+}
 label{display:block;font-weight:bold;margin:18px 0 8px}
 h2{
 color:#172554;
@@ -351,6 +352,7 @@ saveHistory(message,answer);
 }
   
 
+
 function generateReply(){
 const type=document.getElementById("type").value;
 const tone=document.getElementById("tone").value;
@@ -363,11 +365,11 @@ return;
 }
 
 const replies={
-order:"Thanks for reaching out! We'd be happy to help check your order status. Please share your order number so we can look into it.",
+order:"We'd be happy to help check your order status. Please share your order number so we can look into it.",
 delivery:"We're sorry for the delay. Thank you for your patience. Please share your order number so we can check the latest delivery update.",
-refund:"Thanks for contacting us. We'd be happy to review your refund request. Please share your order number and we'll guide you through the next steps.",
+refund:"We'd be happy to review your refund request. Please share your order number and we'll guide you through the next steps.",
 availability:"Thanks for your interest! Please tell us which product or size you're looking for so we can check its availability.",
-thanks:"You're very welcome! Thank you for shopping with us. We appreciate your support!"
+thanks:"You're very welcome! We appreciate your support!"
 };
 
 let reply=replies[type];
@@ -378,21 +380,18 @@ reply=reply.split(".")[0]+".";
 
 if(tone==="professional"){
 reply="Hello,\n\n"+reply+"\n\nBest regards,\nCustomer Support";
-}
-
-if(tone==="friendly"){
+}else if(tone==="friendly"){
 reply="Hi there!\n\n"+reply+"\n\nHave a great day!";
 }
 
 if(shopName){
-reply+="\n\n— "+shopName+" Support";
+reply="Thank you for contacting "+shopName+"!\n\n"+reply;
 }
 
 document.getElementById("result").textContent=reply;
-
 saveHistory(message,reply);
 }
-
+  
 function copyReply(){
 const reply=document.getElementById("result").textContent;
 
@@ -453,7 +452,8 @@ box.appendChild(entry);
 
 </script>
   <footer>
-  <p>ReplyFlow · Review every reply before sending.</p>
-  </footer>
+<p>ReplyFlow · Review every reply before sending.</p>
+</footer>
 </body>
 </html>
+
