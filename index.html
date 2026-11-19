@@ -96,6 +96,12 @@ answer="Which product are you looking for? We'll help check availability.";
 }
 
 result.textContent=answer;
+      let history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
+history.unshift({question:message,answer:answer});
+localStorage.setItem("replyHistory",JSON.stringify(history));
+
+result.textContent=answer;
+showHistory();
     }
 function generateReply(){
 const type=document.getElementById("type").value;
