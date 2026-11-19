@@ -96,7 +96,8 @@ let history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
 
 history.unshift({
 question:question,
-answer:answer
+answer:answer,
+date:new Date().toLocaleString()
 });
 
 history=history.slice(0,30);
@@ -206,6 +207,8 @@ history.forEach(item=>{
 const entry=document.createElement("div");
 entry.className="history-item";
 
+const date=document.createElement("small");
+date.textContent=item.date || "";
 const question=document.createElement("p");
 const answer=document.createElement("p");
 
