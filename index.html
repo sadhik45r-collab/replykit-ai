@@ -215,6 +215,7 @@ entry.className="history-item";
 
 const date=document.createElement("small");
 date.textContent=item.date || "";
+
 const question=document.createElement("p");
 const answer=document.createElement("p");
 
@@ -224,10 +225,12 @@ answer.textContent="ReplyFlow: "+item.answer;
 entry.appendChild(date);
 entry.appendChild(question);
 entry.appendChild(answer);
-  const deleteBtn=document.createElement("button");
+
+const deleteBtn=document.createElement("button");
 deleteBtn.textContent="Delete";
 deleteBtn.style.background="#dc2626";
 deleteBtn.style.color="white";
+deleteBtn.style.marginTop="10px";
 
 deleteBtn.onclick=function(){
 let saved=JSON.parse(localStorage.getItem("replyHistory") || "[]");
