@@ -243,8 +243,10 @@ saved.splice(index,1);
 localStorage.setItem("replyHistory",JSON.stringify(saved));
 showHistory();
 };
-
-showHistory();
+entry.appendChild(deleteBtn);
+box.appendChild(entry);
+});
+  }
 
 </script>
 </body>
