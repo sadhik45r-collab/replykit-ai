@@ -297,6 +297,7 @@ showHistory();
 function askReplyFlow(){
 const message=document.getElementById("askMessage").value.trim();
 const result=document.getElementById("askResult");
+const shopName=document.getElementById("shopName").value.trim();
 
 if(!message){
 alert("Please enter your question.");
@@ -342,6 +343,10 @@ answer="You're very welcome! Thank you for choosing our shop.";
 
 }else if(q.includes("hello") || q.includes("hi")){
 answer="Hello! Welcome to our shop. How can we help you today?";
+}
+
+if(shopName){
+answer="Thank you for contacting "+shopName+"!\n\n"+answer;
 }
 
 result.textContent=answer;
