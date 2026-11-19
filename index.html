@@ -4,7 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ReplyKit - Customer Reply Assistant</title>
+<title>ReplyFlow - Customer Reply Assistant</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f4f6fb;color:#172033;font-family:Arial,sans-serif}
@@ -14,22 +15,31 @@ header p{color:#cbd5e1;margin-bottom:0}
 main{max-width:600px;margin:25px auto;padding:20px}
 .card{background:white;padding:22px;border-radius:16px;box-shadow:0 4px 18px #0000000d}
 label{display:block;font-weight:bold;margin:18px 0 8px}
-textarea,select{width:100%;padding:13px;border:1px solid #cbd5e1;border-radius:9px;font-size:16px}
+textarea,select,input{width:100%;padding:13px;border:1px solid #cbd5e1;border-radius:9px;font-size:16px}
 textarea{height:120px;resize:vertical}
 button{border:0;border-radius:9px;padding:13px 17px;font-size:15px;font-weight:bold;cursor:pointer}
 .generate{background:#2563eb;color:white;width:100%;margin-top:18px}
 .copy{background:#172554;color:white;margin-top:12px}
-#result{background:#f1f5f9;padding:15px;border-radius:9px;min-height:80px;white-space:pre-wrap;line-height:1.6;margin-top:12px}
+#result,#askResult{background:#f1f5f9;padding:15px;border-radius:9px;min-height:50px;white-space:pre-wrap;line-height:1.6;margin-top:12px}
+.ask-button{background:#172554;color:white;margin-top:10px;width:100%}
+#chatHistory{margin-top:12px}
+.history-item{background:#f1f5f9;padding:12px;border-radius:9px;margin-bottom:10px;overflow-wrap:anywhere}
+.history-item p{white-space:pre-wrap;line-height:1.5}
+.clear{background:#dc2626;color:white;margin-top:10px}
 footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 </style>
 </head>
+
 <body>
+
 <header>
-<h1>ReplyKit</h1>
+<h1>ReplyFlow</h1>
 <p>Better customer replies. Less time typing.</p>
 </header>
+
 <main>
 <div class="card">
+
 <h2>Customer Reply Assistant</h2>
 <p>Choose a situation and create a helpful reply for your customer.</p>
 
@@ -41,7 +51,8 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 <option value="availability">Product availability</option>
 <option value="thanks">Customer says thank you</option>
 </select>
-  <label for="shopName">Shop Name</label>
+
+<label for="shopName">Shop Name</label>
 <input type="text" id="shopName" placeholder="Enter your shop name">
 
 <label for="message">Customer message</label>
@@ -57,21 +68,45 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 <button class="generate" onclick="generateReply()">Generate Reply</button>
 
 <h3>Suggested reply</h3>
-<div class="ask-box">
-<textarea id="askMessage" placeholder="Ask anything about orders, delivery, refunds..."></textarea>
-<button onclick="askReplyFlow()">Ask ReplyFlow</button>
-<div id="askResult"></div>
-  <h3>Conversation History</h3>
-<div id="chatHistory"></div>
-<button onclick="clearHistory()">Clear History</button>
-</div>
 <div id="result">Your suggested reply will appear here.</div>
 <button class="copy" onclick="copyReply()">Copy Reply</button>
+
+<hr>
+
+<h3>Ask ReplyFlow</h3>
+<textarea id="askMessage" placeholder="Ask anything about orders, delivery, refunds..."></textarea>
+<button class="ask-button" onclick="askReplyFlow()">Ask ReplyFlow</button>
+<div id="askResult"></div>
+
+<hr>
+
+<h3>Conversation History</h3>
+<div id="chatHistory">No conversations yet.</div>
+<button class="clear" onclick="clearHistory()">Clear History</button>
+
 </div>
 </main>
-<footer>ReplyKit · Review every reply before sending.</footer>
-  <script>
-    function askReplyFlow(){
+
+<footer>ReplyFlow · Review every reply before sending.</footer>
+
+<script>
+
+function saveHistory(question,answer){
+let history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
+
+history.unshift({
+question:question,
+answer:answer
+});
+
+history=history.slice(0,30);
+
+localStorage.setItem("replyHistory",JSON.stringify(history));
+
+showHistory();
+}
+
+function askReplyFlow(){
 const message=document.getElementById("askMessage").value.trim();
 const result=document.getElementById("askResult");
 
@@ -95,17 +130,14 @@ answer="Please share your order number so we can help with cancellation.";
 answer="Which product are you looking for? We'll help check availability.";
 }
 
-let history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
-history.unshift({question:message,answer:answer});
-localStorage.setItem("replyHistory",JSON.stringify(history));
-
 result.textContent=answer;
-showHistory();
-    }
+saveHistory(message,answer);
+}
+
 function generateReply(){
 const type=document.getElementById("type").value;
 const tone=document.getElementById("tone").value;
-const message=document.getElementById("message").value.trim()
+const message=document.getElementById("message").value.trim();
 const shopName=document.getElementById("shopName").value.trim();
 
 if(!message){
@@ -122,46 +154,58 @@ thanks:"You're very welcome! Thank you for shopping with us. We appreciate your 
 };
 
 let reply=replies[type];
-  if(!reply){
-alert("Please select a valid reply type.");
-return;
-  }
 
 if(tone==="short"){
 reply=reply.split(".")[0]+".";
 }
+
 if(tone==="professional"){
 reply="Hello,\n\n"+reply+"\n\nBest regards,\nCustomer Support";
 }
+
 if(tone==="friendly"){
 reply="Hi there!\n\n"+reply+"\n\nHave a great day!";
 }
+
 if(shopName){
-reply += "\n\n— " + shopName + " Support";
+reply+="\n\n— "+shopName+" Support";
 }
- document.getElementById("result").textContent=reply;
-  }
+
+document.getElementById("result").textContent=reply;
+
+saveHistory(message,reply);
+}
 
 function copyReply(){
 const reply=document.getElementById("result").textContent;
+
 if(reply==="Your suggested reply will appear here."){
 alert("Generate a reply first.");
 return;
 }
+
 if(navigator.clipboard && navigator.clipboard.writeText){
 navigator.clipboard.writeText(reply).then(()=>alert("Reply copied!"));
 }else{
 alert("Please select and copy the reply manually.");
 }
 }
-    function showHistory(){
+
+function showHistory(){
 const history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
 const box=document.getElementById("chatHistory");
 
 box.textContent="";
 
+if(history.length===0){
+box.textContent="No conversations yet.";
+return;
+}
+
 history.forEach(item=>{
 const entry=document.createElement("div");
+entry.className="history-item";
+
 const question=document.createElement("p");
 const answer=document.createElement("p");
 
@@ -172,7 +216,7 @@ entry.appendChild(question);
 entry.appendChild(answer);
 box.appendChild(entry);
 });
-    }
+}
 
 function clearHistory(){
 localStorage.removeItem("replyHistory");
@@ -180,7 +224,7 @@ showHistory();
 }
 
 showHistory();
+
 </script>
 </body>
 </html>
-
