@@ -70,9 +70,8 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 </div>
 </main>
 <footer>ReplyKit · Review every reply before sending.</footer>
-
-
-  function askReplyFlow(){
+  <script>
+    function askReplyFlow(){
 const message=document.getElementById("askMessage").value.trim();
 const result=document.getElementById("askResult");
 
@@ -81,38 +80,23 @@ alert("Please enter your question.");
 return;
 }
 
-let answer="Thanks for contacting us! We'd be happy to help. Could you please share more details so we can assist you?";
-
+let answer="Thanks for contacting us! Please share more details so we can help.";
 const q=message.toLowerCase();
 
 if(q.includes("order")){
-answer="Thanks for reaching out! Please share your order number so we can check your order status.";
-}
-else if(q.includes("delivery") || q.includes("late")){
-answer="We're sorry for the delay. Please share your order number so we can check the latest delivery update.";
-}
-else if(q.includes("refund")){
-answer="Hello,\n\nThanks for contacting us. We'd be happy to review your refund request. Please share your order number and we'll guide you through the next steps.\n\nBest regards,\nCustomer Support";
-}
-else if(q.includes("cancel")){
-answer="Thanks for contacting us. Please share your order number so we can help with your cancellation request.";
-}
-else if(q.includes("available") || q.includes("stock")){
-answer="Thanks for your interest! Please tell us which product you're looking for so we can check its availability.";
+answer="Please share your order number so we can check your order status.";
+}else if(q.includes("delivery") || q.includes("late")){
+answer="Sorry for the delay. Please share your order number so we can check the delivery update.";
+}else if(q.includes("refund")){
+answer="Please share your order number so we can help with your refund request.";
+}else if(q.includes("cancel")){
+answer="Please share your order number so we can help with cancellation.";
+}else if(q.includes("available") || q.includes("stock")){
+answer="Which product are you looking for? We'll help check availability.";
 }
 
 result.textContent=answer;
-}
-  let history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
-
-history.unshift({
-question:message,
-answer:answer
-});
-
-localStorage.setItem("replyHistory",JSON.stringify(history));
-showHistory();
-  <script>
+    }
 function generateReply(){
 const type=document.getElementById("type").value;
 const tone=document.getElementById("tone").value;
