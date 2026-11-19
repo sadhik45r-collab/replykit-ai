@@ -295,6 +295,7 @@ localStorage.setItem("replyHistory",JSON.stringify(history));
 showHistory();
 }
 
+
 function askReplyFlow(){
 const message=document.getElementById("askMessage").value.trim();
 const result=document.getElementById("askResult");
@@ -304,24 +305,51 @@ alert("Please enter your question.");
 return;
 }
 
-let answer="Thanks for contacting us! Please share more details so we can help.";
 const q=message.toLowerCase();
 
-if(q.includes("order")){
-answer="Please share your order number so we can check your order status.";
-}else if(q.includes("delivery") || q.includes("late")){
-answer="Sorry for the delay. Please share your order number so we can check the delivery update.";
-}else if(q.includes("refund")){
-answer="Please share your order number so we can help with your refund request.";
+let answer="Thanks for contacting us! Please share more details so we can help.";
+
+if(q.includes("delivery") || q.includes("late") || q.includes("delay")){
+answer="Sorry for the delay. Please share your order number so we can check the latest delivery update.";
+
+}else if(q.includes("refund") || q.includes("money back")){
+answer="We can help with your refund request. Please share your order number so we can check it.";
+
 }else if(q.includes("cancel")){
-answer="Please share your order number so we can help with cancellation.";
+answer="We can help with cancellation. Please share your order number.";
+
+}else if(q.includes("return") || q.includes("exchange")){
+answer="We can help with returns and exchanges. Please share your order number and the reason for your request.";
+
+}else if(q.includes("damaged") || q.includes("broken") || q.includes("wrong item")){
+answer="We're sorry about the issue. Please share your order number and details so we can help.";
+
+}else if(q.includes("payment") || q.includes("paid")){
+answer="Please share your order number and payment details so we can help check your payment.";
+
+}else if(q.includes("price") || q.includes("cost")){
+answer="Please tell us which product you're interested in, and we'll help with its price.";
+
 }else if(q.includes("available") || q.includes("stock")){
-answer="Which product are you looking for? We'll help check availability.";
+answer="Which product are you looking for? We'll help check its availability.";
+
+}else if(q.includes("track") || q.includes("tracking")){
+answer="Please share your order number so we can help you track your order.";
+
+}else if(q.includes("order")){
+answer="Please share your order number so we can check your order status.";
+
+}else if(q.includes("thank")){
+answer="You're very welcome! Thank you for choosing our shop.";
+
+}else if(q.includes("hello") || q.includes("hi")){
+answer="Hello! Welcome to our shop. How can we help you today?";
 }
 
 result.textContent=answer;
 saveHistory(message,answer);
 }
+  
 
 function generateReply(){
 const type=document.getElementById("type").value;
