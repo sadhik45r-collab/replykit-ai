@@ -61,6 +61,9 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:20px}
 <textarea id="askMessage" placeholder="Ask anything about orders, delivery, refunds..."></textarea>
 <button onclick="askReplyFlow()">Ask ReplyFlow</button>
 <div id="askResult"></div>
+  <h3>Conversation History</h3>
+<div id="chatHistory"></div>
+<button onclick="clearHistory()">Clear History</button>
 </div>
 <div id="result">Your suggested reply will appear here.</div>
 <button class="copy" onclick="copyReply()">Copy Reply</button>
@@ -100,6 +103,15 @@ answer="Thanks for your interest! Please tell us which product you're looking fo
 
 result.textContent=answer;
 }
+  let history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
+
+history.unshift({
+question:message,
+answer:answer
+});
+
+localStorage.setItem("replyHistory",JSON.stringify(history));
+showHistory();
   <script>
 function generateReply(){
 const type=document.getElementById("type").value;
@@ -153,6 +165,32 @@ navigator.clipboard.writeText(reply).then(()=>alert("Reply copied!"));
 alert("Please select and copy the reply manually.");
 }
 }
+    function showHistory(){
+const history=JSON.parse(localStorage.getItem("replyHistory") || "[]");
+const box=document.getElementById("chatHistory");
+
+box.textContent="";
+
+history.forEach(item=>{
+const entry=document.createElement("div");
+const question=document.createElement("p");
+const answer=document.createElement("p");
+
+question.textContent="You: "+item.question;
+answer.textContent="ReplyFlow: "+item.answer;
+
+entry.appendChild(question);
+entry.appendChild(answer);
+box.appendChild(entry);
+});
+}
+
+function clearHistory(){
+localStorage.removeItem("replyHistory");
+showHistory();
+}
+
+showHistory();
 </script>
 </body>
 </html>
