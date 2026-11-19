@@ -233,21 +233,16 @@ deleteBtn.style.color="white";
 deleteBtn.style.marginTop="10px";
 
 deleteBtn.onclick=function(){
+
+if(!confirm("Are you sure you want to delete this conversation?")){
+return;
+}
+
 let saved=JSON.parse(localStorage.getItem("replyHistory") || "[]");
 saved.splice(index,1);
 localStorage.setItem("replyHistory",JSON.stringify(saved));
 showHistory();
 };
-
-entry.appendChild(deleteBtn);
-box.appendChild(entry);
-});
-}
-
-function clearHistory(){
-localStorage.removeItem("replyHistory");
-showHistory();
-}
 
 showHistory();
 
