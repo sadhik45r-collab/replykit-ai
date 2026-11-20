@@ -4,245 +4,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ReplyFlow</title>
+<title>ReplyFlow - Customer Support Assistant</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:linear-gradient(135deg,#eef2ff,#f8fafc);color:#172033;font-family:Arial,sans-serif}
-header{background:linear-gradient(135deg,#172554,#2563eb);color:white;padding:25px;text-align:center;border-radius:0 0 20px 20px}
-main{max-width:650px;margin:25px auto;padding:16px}
-.card,#authSection{background:white;padding:24px;border-radius:18px;box-shadow:0 8px 25px #17255418}
-#authSection{max-width:420px;margin:50px auto;text-align:center}
-h2{color:#172554}
-input,textarea,select{width:100%;padding:13px;margin:8px 0;border:1px solid #cbd5e1;border-radius:10px;font-size:16px}
-textarea{height:110px}
-button{padding:13px 17px;border:0;border-radius:9px;font-weight:bold;cursor:pointer;margin-top:10px}
-.auth-button,.generate,.ask-button{background:#2563eb;color:white;width:100%}
-.copy{background:#172554;color:white}
-.clear,.delete{background:#dc2626;color:white}
-.logout{background:white;color:#172554}
-#result,#askResult{background:#f8faff;padding:15px;border-radius:10px;white-space:pre-wrap;line-height:1.6;margin-top:10px}
-.history-item{background:#f8faff;padding:14px;border-radius:10px;margin:12px 0;overflow-wrap:anywhere}
-.history-item p{white-space:pre-wrap}
-small{color:#64748b}
-footer{text-align:center;color:#64748b;padding:20px}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:linear-gradient(135deg,#eef2ff,#f8fafc);
+ color:#172033;
+}
+header{
+ background:linear-gradient(135deg,#172554,#4f46e5);
+ color:white;
+ padding:30px 15px;
+ text-align:center;
+}
+header h1{margin:0;font-size:32px}
+header p{color:#dbeafe}
+.container{max-width:760px;margin:25px auto;padding:0 15px}
+.card{
+ background:white;
+ padding:22px;
+ margin-bottom:18px;
+ border-radius:16px;
+ box-shadow:0 5px 20px #17255412;
+}
+h2{color:#172554;margin-top:0}
+input,textarea,select{
+ width:100%;
+ padding:13px;
+ margin:8px 0 14px;
+ border:1px solid #dbe1ee;
+ border-radius:9px;
+ font-size:15px;
+}
+textarea{min-height:100px;resize:vertical}
+button{
+ border:0;
+ border-radius:9px;
+ padding:12px 17px;
+ background:#4f46e5;
+ color:white;
+ font-size:15px;
+ font-weight:bold;
+ cursor:pointer;
+ margin:4px 3px 4px 0;
+}
+button:hover{opacity:.9}
+.full{width:100%;margin:8px 0}
+.secondary{background:#e0e7ff;color:#312e81}
+.danger{background:#dc2626}
+#authSection{max-width:430px;margin:35px auto}
+#appSection{display:none}
+#authMessage{color:#dc2626;font-size:14px;overflow-wrap:anywhere}
+#result{
+ background:#f8fafc;
+ border:1px solid #dbeafe;
+ padding:16px;
+ border-radius:10px;
+ min-height:65px;
+ white-space:pre-wrap;
+ line-height:1.6;
+}
+.history-item{
+ border:1px solid #e2e8f0;
+ padding:13px;
+ border-radius:10px;
+ margin-top:12px;
+ overflow-wrap:anywhere;
+}
+.history-item p{white-space:pre-wrap;line-height:1.5}
+.small{font-size:12px;color:#64748b}
+footer{text-align:center;padding:25px;color:#64748b;font-size:13px}
 </style>
 </head>
+
 <body>
 
-<div id="authSection">
-<h2>Welcome to ReplyFlow</h2>
-<p>Login or create your account</p>
-
-<input type="email" id="email" placeholder="Email address">
-<input type="password" id="password" placeholder="Password">
-
-<button class="auth-button" onclick="signUp()">Sign Up</button>
-<button class="auth-button" onclick="login()">Login</button>
-<p id="authMessage"></p>
-</div>
-
-<div id="appSection" style="display:none">
 <header>
-<h1>ReplyFlow</h1>
-<p>Better customer replies. Less time typing.</p>
-<button class="logout" onclick="logout()">Logout</button>
+ <h1>ReplyFlow</h1>
+ <p>Better customer replies. Made simple.</p>
 </header>
 
-<main>
+<div class="container">
+
+<section id="authSection" class="card">
+ <h2>Welcome to ReplyFlow</h2>
+ <p>Create an account or log in.</p>
+
+ <label>Email address</label>
+ <input type="email" id="email" placeholder="Enter your email">
+
+ <label>Password</label>
+ <input type="password" id="password" placeholder="At least 6 characters">
+
+ <button class="full" id="signupBtn">Create Account</button>
+ <button class="full secondary" id="loginBtn">Login</button>
+
+ <p id="authMessage"></p>
+</section>
+
+<section id="appSection">
+
 <div class="card">
-<h2>Customer Reply Assistant</h2>
-<p>Choose a situation and create a helpful reply.</p>
+ <h2>Customer Reply Generator</h2>
+ <p>Create a helpful reply for your customer.</p>
 
-<label>Customer situation</label>
-<select id="type">
-<option value="order">Where is my order?</option>
-<option value="delivery">Delivery delay</option>
-<option value="refund">Refund request</option>
-<option value="availability">Product availability</option>
-<option value="thanks">Customer says thank you</option>
-</select>
+ <label>Customer situation</label>
+ <select id="situation">
+  <option value="delivery">Delivery delay</option>
+  <option value="order">Order status</option>
+  <option value="refund">Refund request</option>
+  <option value="availability">Product availability</option>
+  <option value="thanks">Customer appreciation</option>
+  <option value="complaint">Customer complaint</option>
+  <option value="custom">General question</option>
+ </select>
 
-<label>Shop Name</label>
-<input id="shopName" placeholder="Enter your shop name">
+ <label>Shop name</label>
+ <input id="shopName" value="ReplyFlow">
 
-<label>Customer message</label>
-<textarea id="message" placeholder="Paste customer's message..."></textarea>
+ <label>Customer message</label>
+ <textarea id="customerMessage" placeholder="Write the customer's message..."></textarea>
 
-<label>Reply tone</label>
-<select id="tone">
-<option value="friendly">Friendly</option>
-<option value="professional">Professional</option>
-<option value="short">Short and simple</option>
-</select>
+ <label>Reply tone</label>
+ <select id="tone">
+  <option value="friendly">Friendly</option>
+  <option value="professional">Professional</option>
+  <option value="short">Short</option>
+ </select>
 
-<button class="generate" onclick="generateReply()">Generate Reply</button>
+ <button class="full" id="generateBtn">Generate Reply</button>
 
-<h3>Suggested reply</h3>
-<div id="result">Your suggested reply will appear here.</div>
-<button class="copy" onclick="copyReply()">Copy Reply</button>
-
-<hr>
-
-<h3>Ask ReplyFlow</h3>
-<textarea id="askMessage" placeholder="Ask about orders, delivery, refunds..."></textarea>
-<button class="ask-button" onclick="askReplyFlow()">Ask ReplyFlow</button>
-<div id="askResult"></div>
-
-<hr>
-
-<h3>Conversation History</h3>
-<div id="chatHistory">No conversations yet.</div>
-<button class="clear" onclick="clearHistory()">Clear History</button>
+ <h3>Suggested Reply</h3>
+ <div id="result">Your reply will appear here.</div>
+ <button id="copyBtn" class="secondary">Copy Reply</button>
 </div>
-</main>
+
+<div class="card">
+ <h2>Conversation History</h2>
+ <button id="clearBtn" class="danger">Clear History</button>
+ <div id="historyList"></div>
+</div>
+
+<div class="card">
+ <h2>Your Account</h2>
+ <p id="userEmail"></p>
+ <button id="logoutBtn" class="danger">Logout</button>
+</div>
+
+</section>
+</div>
 
 <footer>ReplyFlow · Review every reply before sending.</footer>
+  
+<div id="historyList"></div>
 </div>
 
-<script>
-let deleteIndex=null;
+<div class="card">
+<h2>Your Account</h2>
+<p id="userEmail"></p>
+<button id="logoutBtn" class="danger">Logout</button>
+</div>
+</section>
+</div>
 
-function historyKey(){
-return "replyHistory_"+(window.replyFlowUid||"guest");
-}
-
-function saveHistory(question,answer){
-let history=JSON.parse(localStorage.getItem(historyKey())||"[]");
-history.unshift({
-question:question,
-answer:answer,
-date:new Date().toLocaleString()
-});
-history=history.slice(0,30);
-localStorage.setItem(historyKey(),JSON.stringify(history));
-showHistory();
-}
-
-function showHistory(){
-const history=JSON.parse(localStorage.getItem(historyKey())||"[]");
-const box=document.getElementById("chatHistory");
-box.textContent="";
-
-if(history.length===0){
-box.textContent="No conversations yet.";
-return;
-}
-
-history.forEach((item,index)=>{
-const entry=document.createElement("div");
-entry.className="history-item";
-
-const date=document.createElement("small");
-date.textContent=item.date||"";
-
-const question=document.createElement("p");
-question.textContent="You: "+item.question;
-
-const answer=document.createElement("p");
-answer.textContent="ReplyFlow: "+item.answer;
-
-const deleteBtn=document.createElement("button");
-deleteBtn.className="delete";
-deleteBtn.textContent="Delete";
-deleteBtn.onclick=()=>{
-deleteIndex=index;
-if(confirm("Are you sure you want to delete this conversation?")){
-let saved=JSON.parse(localStorage.getItem(historyKey())||"[]");
-saved.splice(deleteIndex,1);
-localStorage.setItem(historyKey(),JSON.stringify(saved));
-showHistory();
-}
-};
-
-entry.append(date,question,answer,deleteBtn);
-box.appendChild(entry);
-});
-}
-
-function clearHistory(){
-if(confirm("Are you sure you want to delete all conversations?")){
-localStorage.removeItem(historyKey());
-showHistory();
-}
-}
-
-function generateReply(){
-const type=document.getElementById("type").value;
-const tone=document.getElementById("tone").value;
-const message=document.getElementById("message").value.trim();
-const shop=document.getElementById("shopName").value.trim();
-
-if(!message){alert("Please enter the customer's message.");return;}
-
-const replies={
-order:"We'd be happy to help check your order status. Please share your order number.",
-delivery:"We're sorry for the delay. Please share your order number so we can check the latest delivery update.",
-refund:"We'd be happy to review your refund request. Please share your order number.",
-availability:"Thanks for your interest! Please tell us which product you're looking for.",
-thanks:"You're very welcome! We appreciate your support!"
-};
-
-let reply=replies[type];
-
-if(tone==="short")reply=reply.split(".")[0]+".";
-if(tone==="professional")reply="Hello,\n\n"+reply+"\n\nBest regards,\nCustomer Support";
-if(tone==="friendly")reply="Hi there!\n\n"+reply+"\n\nHave a great day!";
-if(shop)reply="Thank you for contacting "+shop+"!\n\n"+reply;
-
-document.getElementById("result").textContent=reply;
-saveHistory(message,reply);
-}
-
-function copyReply(){
-const reply=document.getElementById("result").textContent;
-if(reply==="Your suggested reply will appear here."){
-alert("Generate a reply first.");return;
-}
-if(navigator.clipboard){
-navigator.clipboard.writeText(reply).then(()=>alert("Reply copied!"));
-}else{alert("Please copy the reply manually.");}
-}
-
-function askReplyFlow(){
-const message=document.getElementById("askMessage").value.trim();
-const shop=document.getElementById("shopName").value.trim();
-if(!message){alert("Please enter your question.");return;}
-
-const q=message.toLowerCase();
-let answer="Thanks for contacting us! Please share more details so we can help.";
-
-if(q.includes("delivery")||q.includes("late")||q.includes("delay"))
-answer="Sorry for the delay. Please share your order number so we can check the delivery update.";
-else if(q.includes("refund")||q.includes("money back"))
-answer="We can help with your refund request. Please share your order number.";
-else if(q.includes("cancel"))
-answer="We can help with cancellation. Please share your order number.";
-else if(q.includes("return")||q.includes("exchange"))
-answer="We can help with returns and exchanges. Please share your order number.";
-else if(q.includes("damaged")||q.includes("broken")||q.includes("wrong item"))
-answer="We're sorry about the issue. Please share your order number and details.";
-else if(q.includes("payment")||q.includes("paid"))
-answer="Please share your order number so we can help check your payment.";
-else if(q.includes("price")||q.includes("cost"))
-answer="Please tell us which product you're interested in.";
-else if(q.includes("available")||q.includes("stock"))
-answer="Which product are you looking for?";
-else if(q.includes("track")||q.includes("tracking")||q.includes("order"))
-answer="Please share your order number so we can check your order status.";
-else if(q.includes("thank"))
-answer="You're very welcome! Thank you for choosing our shop.";
-else if(q.includes("hello")||q.includes("hi"))
-answer="Hello! Welcome to our shop. How can we help you today?";
-
-if(shop)answer="Thank you for contacting "+shop+"!\n\n"+answer;
-
-document.getElementById("askResult").textContent=answer;
-saveHistory(message,answer);
-}
-</script>
+<footer>ReplyFlow · Review every reply before sending.</footer>
 
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import {initializeApp}
+from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+
 import {
 getAuth,
 createUserWithEmailAndPassword,
@@ -251,26 +184,8 @@ onAuthStateChanged,
 signOut
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
-const firebaseConfig={
-apiKey:// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDdj4kG6Byz7bjunBnEGuXEjgu6gUFiIKA",
-  authDomain: "replyflow-45996.firebaseapp.com",
-  projectId: "replyflow-45996",
-  storageBucket: "replyflow-45996.firebasestorage.app",
-  messagingSenderId: "649510746222",
-  appId: "1:649510746222:web:7de13f88de2273cd60ce7f"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const firebaseConfig = {
-apiKey: "AIzaSyDdj4kG6Byz7bjunBnEGuXEjgu6gUFiIKA",
+apiKey: "PASTE_YOUR_API_KEY_HERE",
 authDomain: "replyflow-45996.firebaseapp.com",
 projectId: "replyflow-45996",
 storageBucket: "replyflow-45996.firebasestorage.app",
@@ -278,62 +193,190 @@ messagingSenderId: "649510746222",
 appId: "1:649510746222:web:7de13f88de2273cd60ce7f"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-authDomain:"replyflow-45996.firebaseapp.com",
-projectId:"replyflow-45996",
-storageBucket:"replyflow-45996.firebasestorage.app",
-messagingSenderId:"649510746222",
-appId:"1:649510746222:web:7de13f88de2273cd60ce7f"
+const auth = getAuth(app);
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let history = [];
+
+function historyKey(){
+return "replyHistory_" + currentUser.uid;
+}
+
+function saveHistory(){
+localStorage.setItem(historyKey(), JSON.stringify(history));
+}
+
+function showHistory(){
+const list = $("historyList");
+list.innerHTML = "";
+
+if(history.length === 0){
+list.textContent = "No conversations yet.";
+return;
+}
+
+history.forEach((item,index)=>{
+const div = document.createElement("div");
+div.className = "history-item";
+
+const question = document.createElement("strong");
+question.textContent = "Customer: " + item.question;
+
+const answer = document.createElement("p");
+answer.textContent = "Reply: " + item.answer;
+
+const date = document.createElement("div");
+date.className = "small";
+date.textContent = item.date;
+
+const del = document.createElement("button");
+del.className = "danger";
+del.textContent = "Delete";
+
+del.onclick = ()=>{
+if(confirm("Are you sure you want to delete this conversation?")){
+history.splice(index,1);
+saveHistory();
+showHistory();
+}
 };
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const authMessage=document.getElementById("authMessage");
+div.append(question,answer,date,del);
+list.appendChild(div);
+});
+}
 
-window.signUp=async function(){
-const email=document.getElementById("email").value.trim();
-const password=document.getElementById("password").value;
+const replies = {
+delivery:"We're sorry for the delivery delay. Thank you for your patience. Please share your order number so we can check the latest delivery update.",
+order:"Thank you for contacting us! Please share your order number so we can check your order status.",
+refund:"We're sorry for the inconvenience. Please share your order number so our team can assist with your refund request.",
+availability:"Thank you for your interest! Please tell us which product you're looking for so we can check availability.",
+thanks:"Thank you so much for your kind words! We truly appreciate your support.",
+complaint:"We're sorry to hear about your experience. Please share more details so we can help resolve this.",
+custom:"Thank you for contacting us! Please share a few more details so we can assist you."
+};
+
+$("generateBtn").onclick = ()=>{
+const question = $("customerMessage").value.trim();
+
+if(!question){
+alert("Please enter the customer message.");
+return;
+}
+
+const shop = $("shopName").value.trim() || "our store";
+const situation = $("situation").value;
+const tone = $("tone").value;
+
+let answer = replies[situation];
+
+if(tone === "professional"){
+answer = "Dear Customer,\n\n" + answer +
+"\n\nRegards,\n" + shop;
+}else if(tone === "short"){
+answer = answer.split(".")[0] + ". Please contact " + shop + " for assistance.";
+}else{
+answer = "Hi there!\n\n" + answer +
+"\n\nBest regards,\n" + shop;
+}
+
+$("result").textContent = answer;
+
+history.unshift({
+question: question,
+answer: answer,
+date: new Date().toLocaleString()
+});
+
+history = history.slice(0,50);
+saveHistory();
+showHistory();
+};
+
+$("copyBtn").onclick = async ()=>{
+const answer = $("result").textContent;
+
+if(!answer || answer === "Your reply will appear here."){
+alert("Generate a reply first.");
+return;
+}
+
 try{
-authMessage.textContent="Creating account...";
+await navigator.clipboard.writeText(answer);
+alert("Reply copied!");
+}catch(error){
+alert("Copy is unavailable in this browser.");
+}
+};
+
+$("clearBtn").onclick = ()=>{
+if(confirm("Are you sure you want to clear all history?")){
+history = [];
+saveHistory();
+showHistory();
+}
+};
+
+$("signupBtn").onclick = async ()=>{
+const email = $("email").value.trim();
+const password = $("password").value;
+
+try{
+$("authMessage").textContent = "Creating account...";
 await createUserWithEmailAndPassword(auth,email,password);
-authMessage.textContent="";
+$("authMessage").textContent = "";
 }catch(error){
-authMessage.textContent=error.message;
+$("authMessage").textContent = error.message;
 }
 };
 
-window.login=async function(){
-const email=document.getElementById("email").value.trim();
-const password=document.getElementById("password").value;
+$("loginBtn").onclick = async ()=>{
+const email = $("email").value.trim();
+const password = $("password").value;
+
 try{
-authMessage.textContent="Logging in...";
+$("authMessage").textContent = "Logging in...";
 await signInWithEmailAndPassword(auth,email,password);
-authMessage.textContent="";
+$("authMessage").textContent = "";
 }catch(error){
-authMessage.textContent=error.message;
+$("authMessage").textContent = error.message;
 }
 };
 
-window.logout=async function(){
-try{await signOut(auth);}
-catch(error){alert(error.message);}
+$("logoutBtn").onclick = async ()=>{
+try{
+await signOut(auth);
+}catch(error){
+alert(error.message);
+}
 };
 
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(auth,user=>{
+currentUser = user;
+
 if(user){
-window.replyFlowUid=user.uid;
-document.getElementById("authSection").style.display="none";
-document.getElementById("appSection").style.display="block";
+$("authSection").style.display = "none";
+$("appSection").style.display = "block";
+$("userEmail").textContent = "Logged in as: " + user.email;
+
+try{
+history = JSON.parse(localStorage.getItem(historyKey()) || "[]");
+if(!Array.isArray(history)) history = [];
+}catch(error){
+history = [];
+}
+
 showHistory();
 }else{
-window.replyFlowUid=null;
-document.getElementById("authSection").style.display="block";
-document.getElementById("appSection").style.display="none";
+$("authSection").style.display = "block";
+$("appSection").style.display = "none";
+history = [];
 }
 });
 </script>
-
 </body>
 </html>
+
 
