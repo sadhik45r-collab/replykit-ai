@@ -182,16 +182,24 @@ createUserWithEmailAndPassword,
 signInWithEmailAndPassword,
 onAuthStateChanged,
 signOut
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js"
 
-const firebaseConfig = {
-apiKey: "PASTE_YOUR_API_KEY_HERE",
+ const firebaseConfig = {
+apiKey: "AIzaSyDdj4kG6Byz7bjunBnEGuXEjgu6gUFiIKA",
 authDomain: "replyflow-45996.firebaseapp.com",
 projectId: "replyflow-45996",
 storageBucket: "replyflow-45996.firebasestorage.app",
 messagingSenderId: "649510746222",
 appId: "1:649510746222:web:7de13f88de2273cd60ce7f"
 };
+ 
+  authDomain: "replyflow-45996.firebaseapp.com",
+  projectId: "replyflow-45996",
+  storageBucket: "replyflow-45996.firebasestorage.app",
+  messagingSenderId: "649510746222",
+  appId: "1:649510746222:web:7de13f88de2273cd60ce7f"
+};
+ 
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
